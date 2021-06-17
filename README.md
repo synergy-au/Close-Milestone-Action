@@ -1,9 +1,10 @@
-# Close Milestone Action
+# Close GitHub Milestones Action
 
-Github Action to automatically close milestones linked to pull requests.
-This should be triggered upon pull request closure and closes the milestone when there are no open issues remaining on it.
+This action is dedicated to help managing [GitHub Milestones](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones). It will check if there are any open issues or pull requests associated with the milestone, and if there are no open issues or pull requests left on the milestone, it will close the milestone.
 
-## Example Github Action Workflow File
+Currently this only works on a **pull request closed event** and not an issue closed event. However we'd love this action to support the issue closed event as well so pull requests are definitely welcome :smile:.
+
+## Example GitHub Action Workflow File
 
 ```
 name: Close Milestone
