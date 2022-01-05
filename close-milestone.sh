@@ -22,11 +22,11 @@ function close_standalone_open_milestones()
 
     # Get all OPEN milestones with a due date older than the current date and time
     MILESTONE_DATA=$( curl --silent -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/"${REPOSITORY}"/milestones?state=open\&sort=due_on\&direction=asc )
-    PAST_MILESTONES=$( echo $MILESTONE_DATA | jq --raw-output '.[] | select(.due_on <= '\"$CURRENT_DATETIME\"')' )
+    PAST_MILESTONES=$( echo "$MILESTONE_DATA" | jq --raw-output '.[] | select(.due_on <= '\"$CURRENT_DATETIME\"')' )
 
     if [[ $PAST_MILESTONES != '' ]];
     then
-        MILESTONE_NUMBERS=$( echo $PAST_MILESTONES | jq --raw-output '.number' )
+        MILESTONE_NUMBERS=$( echo "$PAST_MILESTONES" | jq --raw-output '.number' )
 
         for NUMBER in ${MILESTONE_NUMBERS};
         do
@@ -51,6 +51,9 @@ then
 elif [[ ${EVENT_NAME} == "issues" ]];
 then
     EVENT_TRIGGER_SOURCE='Issue'
+elif [[ ${EVENT_NAME} == "workflow_dispatch" ]];
+then
+    EVENT_TRIGGER_SOURCE='Manual'
 else
     EVENT_TRIGGER_SOURCE='Unknown'
 fi
@@ -139,7 +142,7 @@ then
     echo Due On: "$DUE_ON"
 fi
 
-if [[ $EVENT_TRIGGER_SOURCE == "Pull Request" || $EVENT_TRIGGER_SOURCE == "Issue" ]];
+if [[ $EVENT_TRIGGER_SOURCE == "Pull Request" || $EVENT_TRIGGER_SOURCE == "Issue" || $EVENT_TRIGGER_SOURCE == "Manual" ]];
 then
     close_standalone_open_milestones
 fi
