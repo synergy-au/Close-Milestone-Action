@@ -1,6 +1,6 @@
 
 name: 'Close Milestone'
-description: 'Automatically closes milestones linked to pull requests or issues upon closure'
+description: 'Automatically closes milestones linked to pull requests or issues upon closure. Also closes standalone open milestones that are past their due date.'
 inputs:
   secrets-token:
     description: 'The Secrets Github Token used for authenticating Github API calls.'
@@ -15,6 +15,7 @@ runs:
     env:
       SECRETS_TOKEN: ${{ inputs.secrets-token }}
       REPOSITORY: ${{ github.repository }}
+      EVENT_NAME: ${{ github.event_name }}
       PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
       PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
       PULL_REQUEST_MILESTONE: ${{ toJSON(github.event.pull_request.milestone) }}
